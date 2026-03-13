@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gallery ảnh</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+text-align:center;
+}
+
+h1{
+margin-top:30px;
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.gallery img{
+width:100%;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Ảnh mọi người đã gửi</h1>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+
+const cloudName = "dkhtasbmf5"
+
+async function loadImages(){
+
+const url = `https://res.cloudinary.com/${cloudName}/image/list/all.json`
+
+try{
+
+const res = await fetch(url)
+const data = await res.json()
+
+const gallery = document.getElementById("gallery")
+
+data.resources.forEach(img => {
+
+const image = document.createElement("img")
+
+image.src = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.jpg`
+
+gallery.appendChild(image)
+
+})
+
+}catch(e){
+
+console.log("Không tải được ảnh",e)
+
+}
+
+}
+
+loadImages()
+
+</script>
+
+</body>
+</html>
